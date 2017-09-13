@@ -1,0 +1,58 @@
+---
+title: "Coaltion analysis (KOALA) 2017"
+subtitle: "German election coalition probabilities"
+author: ["Alexander Bauer", "Andreas Bender"]
+date: "2017/09/20"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+---
+class: inverse
+# Outline
+
+- Why probabilities?
+
+--
+
+- Implementation (Backend)
+
+--
+
+- Implementation (Frontend)
+
+--
+
+- What to look for on election night?
+
+
+---
+# Motivation
+
+For the German Bundestag election, the most important questions are
+
+> Which parties will form the governing coaliton?
+
+and
+
+> Which parties will enter the Bundestag (pass the 5% threshold)?
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 50% 50%
+class: center, bottom, inverse
+
+# Words!
+
+---
+
