@@ -69,9 +69,9 @@ class: inverse
 # Frontend implementation
 &lt;hr style='border:solid darkgray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
 
-1) Creating a homepage with shiny
+1) Creating a homepage with Shiny
 
-2) Setting up the server with shiny server
+2) Setting up the server with Shiny Server
 
 3) APIs and stuff: tweetR and googlesheets
 
@@ -87,28 +87,28 @@ background-image: url("image/Koala_Logo_Schrift.png")
 background-position: 97% 2%
 background-size: 150px
 background-color: whitesmoke
-# Frontend - shiny
+# Frontend - Shiny
 &lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
 
-shiny in a nutshell:
+Shiny in a nutshell:
 - R package by RStudio
 
 - Web application framework
 
 - Creation of interactive dashboards, running R in the background
 
-- Resources: &lt;a href='https://www.meetup.com/de-DE/Applied-R-Munich/events/226912554/' target='_blank'&gt;Applied R shiny meetup&lt;/a&gt;,  &lt;a href='http://shiny.rstudio.com/' target='_blank'&gt;shiny.rstudio.com&lt;/a&gt;
+- Resources: &lt;a href='https://www.meetup.com/de-DE/Applied-R-Munich/events/226912554/' target='_blank'&gt;Applied R Shiny Meetup&lt;/a&gt;,  &lt;a href='http://shiny.rstudio.com/' target='_blank'&gt;shiny.rstudio.com&lt;/a&gt;
 
 - Tip: Use &lt;a href='https://rstudio.github.io/shinydashboard/' target='_blank'&gt;shinydashboard&lt;/a&gt; for a more appealing dashboard UI
 
 --
 
 &lt;br/&gt;
-Why shiny?
+Why Shiny?
 
 - Easy integration of interactive R output and calculations
 
-- No need for learning another language, shiny creates the HTML, CSS and JavaScript for you!
+- No need for learning another language, Shiny creates the HTML, CSS and JavaScript for you!
 
 
 ---
@@ -116,7 +116,7 @@ background-image: url("image/Koala_Logo_Schrift.png")
 background-position: 97% 2%
 background-size: 150px
 background-color: whitesmoke
-# Frontend - shiny
+# Frontend - Shiny
 &lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
 
 &lt;img src="shiny_example/screenshot_1.png" style="width:45%; display:inline-block; margin-left:45px"/&gt;
@@ -127,7 +127,7 @@ background-image: url("image/Koala_Logo_Schrift.png")
 background-position: 97% 2%
 background-size: 150px
 background-color: whitesmoke
-# Frontend - shiny
+# Frontend - Shiny
 &lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
 
 ```R
@@ -159,23 +159,20 @@ background-image: url("image/Koala_Logo_Schrift.png")
 background-position: 97% 2%
 background-size: 150px
 background-color: whitesmoke
-# Frontend - shiny server
+# Frontend - Shiny Server
 &lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
 
-shiny server in a nutshell:
+Shiny Server in a nutshell:
 
 - Linux-based open source web server by RStudio
 
-- ...
+- Access to the homepage starts an R process with a Shiny app on the server
 
---
 
 &lt;br/&gt;&lt;br/&gt;
 Resources:
 
-- test
-
-- ...
+- &lt;a href='https://www.rstudio.com/products/shiny/shiny-server2/' target='_blank'&gt;Official homepage&lt;/a&gt;
 
 
 ---
@@ -183,23 +180,29 @@ background-image: url("image/Koala_Logo_Schrift.png")
 background-position: 97% 2%
 background-size: 150px
 background-color: whitesmoke
-# Frontend - shiny server
+# Frontend - Shiny Server
 &lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
 
-Setting up shiny server (on Ubuntu 12.04+): (&lt;a href='http://docs.rstudio.com/shiny-server/' target='_blank'&gt;administrator's guide&lt;/a&gt;)
+Setting up Shiny Server (on 64-bit Ubuntu 12.04+): (&lt;a href='http://docs.rstudio.com/shiny-server/' target='_blank'&gt;administrator's guide&lt;/a&gt;)
 
-1) Install R on the server and install all needed R packages
+1) Install R and all needed R packages on the server
 
-2) Install shiny server (&lt;a href='https://www.rstudio.com/products/shiny/download-server/' target='_blank'&gt;install guide&lt;/a&gt;)
+2) Install Shiny Server (&lt;a href='https://www.rstudio.com/products/shiny/download-server/' target='_blank'&gt;install guide&lt;/a&gt;)
 ```bash
 $ sudo apt-get install gdebi-core
 $ sudo wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.5.3.838-amd64.deb
 $ sudo gdebi shiny-server-1.5.3.838-amd64.deb
 ```
 
-3) Customize the shiny-server.conf file
+3) Customize the shiny-server.conf file to your needs
+  &lt;div style="margin-top:-20px"&gt;
+  - &amp;nbsp;Tip 1: &lt;p style="font-family:Source Code Pro; display:inline-block"&gt;'sanitize_errors false;'&lt;/p&gt; gets you clearer error messages
+  &lt;/div&gt;
+  &lt;div style="margin-top:-40px; margin-left:20px"&gt;
+  - Tip 2: &lt;p style="font-family:Source Code Pro; display:inline-block"&gt;'app_idle_timeout 0;'&lt;/p&gt; saves startup time of the R process
+  &lt;/div&gt;
 
-4) ...
+4) Put the Shiny files inside the path specified in shiny.server.conf
 
 
 
@@ -208,27 +211,28 @@ background-image: url("image/Koala_Logo_Schrift.png")
 background-position: 97% 2%
 background-size: 150px
 background-color: whitesmoke
-# Frontend - shiny server
+# Frontend - Shiny Server
 &lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
 
-Capabilities of the free version:
+Capabilities of the free version (Shiny Server Open Source):
 
-- only up to 20 users simultaneously
+- For non-commercial projects
 
-- running on 1 core
--&gt; code efficiently (e.g. pregenerate all plot objects)
+- Up to 20 users simultaneously
+
+- No multiple R processes! &lt;br/&gt; &amp;#8594; code efficiently and precalculate results where possible
+
 
 --
 
-&lt;a href='https://www.rstudio.com/products/shiny/shiny-server/' target='_blank'&gt;Alternatives&lt;/a&gt;:
+&lt;br/&gt;
+&lt;a href='https://www.rstudio.com/products/shiny/shiny-server/' target='_blank'&gt;(R-based) alternatives:&lt;/a&gt;
 
-- RStudio Connect? Geht des a ois Webserver?
+- Shiny Server Pro: Commercial use, multiple R processes etc.
 
-- https://www.shinyapps.io: ...
-
-- shiny server Pro: ...
-
-... or host the website yourself
+- &lt;a href='https://www.shinyapps.io' target='_blank'&gt;shinyapps.io&lt;/a&gt;:
+  - Deploy Shiny apps on RStudio servers
+  - Free version limited to 25 hours of use per month!
 
 
 ---
@@ -357,7 +361,7 @@ while (1 &lt; 2) { # do something eternally
   # Step 1: check for new surveys and perform calculations
   update_results()
   
-  # Step 2: 
+  # Step 2: Update services with new results
   if (new_results) { # if new results are available
     send_tweet()
     export_googleSheets()
@@ -401,6 +405,8 @@ background-size: 150px
 
 - Making both backend and frontend R packages open source
 
+- Simplify data handling, ...
+
 - Extending the use case of the framework:
   - Easy applicability to other elections
   - creating easy-to-use, public APIs
@@ -417,7 +423,7 @@ General sources:
 
 - Raw voting intention polls: &lt;a href='http://www.wahlrecht.de' target='_blank'&gt;www.wahlrecht.de&lt;/a&gt;
 
-- Slides via &lt;a href='https://slides.yihui.name/xaringan/' target='_blank'&gt;Xaringan&lt;/a&gt;
+- Our slides are powered by &lt;a href='https://slides.yihui.name/xaringan/' target='_blank'&gt;Xaringan&lt;/a&gt;
 
 - &lt;a href='https://www.tidyverse.org' target='_blank'&gt;tidyverse&lt;/a&gt; (previously hadleyverse)
 
