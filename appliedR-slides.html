@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coalition analysis (KOALA) 2017</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Alexander Bauer | Andreas Bender" />
+    <meta name="author" content="StaBLab, LMU München" />
+    <link href="libs/remark-css/example.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Coalition analysis (KOALA) 2017
+## German election coalition probabilities
+### Alexander Bauer | Andreas Bender
+### StaBLab, LMU München
+### 2017/09/20
+
+---
+
+
+
+
+background-image: url("image/Koala_Logo_Schrift_hell.png")
+background-position: 97% 2%
+background-size: 150px
+class: inverse
+# Outline
+&lt;hr style='border:solid darkgray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+- Why probabilities?
+
+--
+
+- Implementation (Backend)
+
+--
+
+- Implementation (Frontend)
+
+--
+
+- Outlook &amp; sources
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Motivation
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+For the German Bundestag election, the most important questions are
+
+&gt; Which parties will form the governing coaliton?
+
+and
+
+&gt; Which parties will enter the Bundestag (pass the 5% threshold)?
+
+
+---
+background-image: url("image/Koala_Logo_Schrift_hell.png")
+background-position: 97% 2%
+background-size: 150px
+class: inverse
+# Frontend implementation
+&lt;hr style='border:solid darkgray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+1) Creating a homepage with shiny
+
+2) Setting up the server with shiny server
+
+3) APIs and stuff: tweetR and googlesheets
+
+4) Keep the website running
+
+---
+class: inverse
+&lt;iframe src='http://koala.stat.uni-muenchen.de' style='width:100%; height:96%'/&gt;
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - shiny
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+shiny in a nutshell:
+- R package by RStudio
+
+- Web application framework
+
+- Creation of interactive dashboards, running R in the background
+
+- Resources: &lt;a href='https://www.meetup.com/de-DE/Applied-R-Munich/events/226912554/' target='_blank'&gt;Applied R shiny meetup&lt;/a&gt;,  &lt;a href='http://shiny.rstudio.com/' target='_blank'&gt;shiny.rstudio.com&lt;/a&gt;
+
+- Tip: Use &lt;a href='https://rstudio.github.io/shinydashboard/' target='_blank'&gt;shinydashboard&lt;/a&gt; for a more appealing dashboard UI
+
+--
+
+&lt;br/&gt;
+Why shiny?
+
+- Easy integration of interactive R output and calculations
+
+- No need for learning another language, shiny creates the HTML, CSS and JavaScript for you!
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - shiny
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+&lt;img src="shiny_example/screenshot_1.png" style="width:45%; display:inline-block; margin-left:45px"/&gt;
+&lt;img src="shiny_example/screenshot_2.png" style="width:45%; display:inline-block"/&gt;
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - shiny
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+```R
+library(shiny)
+
+
+ui &lt;- fluidPage(
+  selectInput("plotType_picker", "Pick plot type",
+              choices = c("boxplot","histogram")),
+  plotOutput("my_plot")
+)
+server &lt;- function(input, output) {
+  x &lt;- rnorm(100)
+  output$my_plot &lt;- renderPlot({
+    if (input$plotType_picker == "boxplot") {
+      boxplot(x)
+    } else
+      hist(x)
+  })
+}
+
+
+shinyApp(ui = ui, server = server)
+```
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - shiny server
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+shiny server in a nutshell:
+
+- Linux-based open source web server by RStudio
+
+- ...
+
+--
+
+&lt;br/&gt;&lt;br/&gt;
+Resources:
+
+- test
+
+- ...
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - shiny server
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+Setting up shiny server (on Ubuntu 12.04+): (&lt;a href='http://docs.rstudio.com/shiny-server/' target='_blank'&gt;administrator's guide&lt;/a&gt;)
+
+1) Install R on the server and install all needed R packages
+
+2) Install shiny server (&lt;a href='https://www.rstudio.com/products/shiny/download-server/' target='_blank'&gt;install guide&lt;/a&gt;)
+```bash
+$ sudo apt-get install gdebi-core
+$ sudo wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.5.3.838-amd64.deb
+$ sudo gdebi shiny-server-1.5.3.838-amd64.deb
+```
+
+3) Customize the shiny-server.conf file
+
+4) ...
+
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - shiny server
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+Capabilities of the free version:
+
+- only up to 20 users simultaneously
+
+- running on 1 core
+-&gt; code efficiently (e.g. pregenerate all plot objects)
+
+--
+
+&lt;a href='https://www.rstudio.com/products/shiny/shiny-server/' target='_blank'&gt;Alternatives&lt;/a&gt;:
+
+- RStudio Connect? Geht des a ois Webserver?
+
+- https://www.shinyapps.io: ...
+
+- shiny server Pro: ...
+
+... or host the website yourself
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - tweetR &lt;img src="image/twitter_dunkel.png" style='height:50px; margin-left:20px; margin-bottom:-5px'/&gt;
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+The tweetR package in a nutshell:
+
+- Our use case: Send tweets with new results
+
+- Resources: &lt;a href='http://geoffjentry.hexdump.org/twitteR.pdf' target='_blank'&gt;user vignette&lt;/a&gt;, &lt;a href='https://github.com/geoffjentry/twitteR' target='_blank'&gt;tweetR on GitHub&lt;/a&gt;
+
+- Alternative (more modern) package: &lt;a href='http://rtweet.info/' target='_blank'&gt;rtweet&lt;/a&gt;
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - tweetR &lt;img src="image/twitter_dunkel.png" style='height:50px; margin-left:20px; margin-bottom:-5px'/&gt;
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+Sending a Tweet with tweetR:
+
+1) Register a new Twitter app on &lt;a href='https://apps.twitter.com/' target='_blank'&gt;apps.twitter.com&lt;/a&gt;
+
+2) Use the credentials to do the authorization with R
+```R
+setup_twitter_oauth(consumer_key = "your_consumer_key",
+                    consumer_secret = "your_consumer_secret",
+                    access_token = "your_access_token",
+                    access_secret = "your_access_secret")
+```
+
+3) Start tweeting!
+```R
+tweet(message = "Tweet tweet", mediaPath = "my_picture.png")
+```
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - googlesheets &lt;img src="image/googlesheets.png" style='height:60px; margin-left:20px; margin-bottom:-10px'/&gt;
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+The googlesheets package in a nutshell:
+
+- Our use case: Offering an API for our results
+
+- Resources: &lt;a href='https://github.com/jennybc/googlesheets' target='_blank'&gt;googlesheets on GitHub&lt;/a&gt;
+
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - googlesheets &lt;img src="image/googlesheets.png" style='height:60px; margin-left:20px; margin-bottom:-10px'/&gt;
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+Exporting a table to Google Sheets with googlesheets:
+
+1) Extract your credentials:
+```R
+auth_info &lt;- gs_auth()
+saveRDS(auth_info, file = "auth_info.rds")
+```
+
+2) Use the credentials to do the authorization with R
+```R
+gs_auth(token = "auth_info.rds")
+```
+
+3) Start uploading!
+```R
+my_table &lt;- data.frame("person"      = c("Sepp","Uli","Franz"),
+                       "likes_koala" = c("yes", "yes", "yes"))
+write.csv(my_table, file = "my_table.csv")
+gs_upload("my_table.csv", sheet_title = "my_googleSheet",
+          overwrite = TRUE)
+```
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+# Frontend - Keep the website running
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+Automation of the server:
+
+- We check hourly if new surveys are available and update the results
+
+- Implementation: see next slide
+
+- Tip: Automatic error notification using &lt;a href='https://www.pushbullet.com/' target='_blank'&gt;Pushbullet&lt;/a&gt; &lt;img src="image/pushbullet.png" style="height:40px; margin-bottom:-13px; margin-left:15px"/&gt;
+
+  - Supports notifications to all major (Desktop and mobile) systems
+  
+  - R package: &lt;a href='https://github.com/eddelbuettel/rpushbullet' target='_blank'&gt;RPushbullet on GitHub&lt;/a&gt;
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+background-color: whitesmoke
+&lt;!-- # Frontend - Keep the website running --&gt;
+&lt;!-- &lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt; --&gt;
+
+&lt;div style='margin-top:-25px'/&gt; &lt;!-- use empty div to create negative vertical spacing --&gt;
+### Implementation of the automation process
+1) Set up the R script
+```R
+while (1 &lt; 2) { # do something eternally
+  # Step 1: check for new surveys and perform calculations
+  update_results()
+  
+  # Step 2: 
+  if (new_results) { # if new results are available
+    send_tweet()
+    export_googleSheets()
+    
+    # restart the server to fetch the new results (on Ubuntu 15.04+)
+    system("sudo systemctl restart shiny-server")
+  }
+  
+  # Step 3: Rest for an hour
+  Sys.sleep(60*10)
+}
+```
+
+2) Start the R script on the server
+```bash
+R CMD BATCH update_results_everyHour.R &amp;
+```
+
+
+
+
+---
+background-image: url("image/Koala_Logo_Schrift_hell.png")
+background-position: 97% 2%
+background-size: 150px
+class: inverse
+# Outlook &amp; sources
+&lt;hr style='border:solid darkgray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+1) Future plans
+
+2) Sources
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+# Outlook - Future plans
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+- Making both backend and frontend R packages open source
+
+- Extending the use case of the framework:
+  - Easy applicability to other elections
+  - creating easy-to-use, public APIs
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+# Sources
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+General sources:
+
+- Raw voting intention polls: &lt;a href='http://www.wahlrecht.de' target='_blank'&gt;www.wahlrecht.de&lt;/a&gt;
+
+- Slides via &lt;a href='https://slides.yihui.name/xaringan/' target='_blank'&gt;Xaringan&lt;/a&gt;
+
+- &lt;a href='https://www.tidyverse.org' target='_blank'&gt;tidyverse&lt;/a&gt; (previously hadleyverse)
+
+&lt;br/&gt;
+--
+
+How to reach us?
+
+- Visit us on &lt;a href='koala.stat.uni-muenchen.de' target='_blank'&gt;koala.stat.uni-muenchen.de&lt;/a&gt;
+
+- Follow  &lt;a href='https://twitter.com/KOALA_LMU' target='_blank'&gt;@KOALA_LMU&lt;/a&gt; on Twitter
+
+- Contact us directly: &lt;a href='mailto:koala@stat.uni-muenchen.de'&gt;koala@stat.uni-muenchen.de&lt;/a&gt;
+
+- Feel free to contribute on &lt;a href='https://github.com/adibender/coalitions' target='_blank'&gt;GitHub&lt;/a&gt;
+
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 97% 2%
+background-size: 150px
+# Preparing for election day
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+Keep in mind:
+
+- We make no predictions!
+
+- Many voters haven't drawn their final decision yet
+
+
+---
+background-image: url("image/Koala_Logo_Schrift.png")
+background-position: 50% 10%
+background-size: 250px
+class: center
+&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;
+&lt;hr style='border:solid gray 1px; height:0px; margin-top:-20px; margin-bottom:50px'/&gt;
+
+# So, stay tuned...
+&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;
+... and &lt;a href='https://twitter.com/KOALA_LMU' target='_blank'&gt;follow us on Twitter&lt;/a&gt;! :-)
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
