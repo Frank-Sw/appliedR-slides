@@ -18,7 +18,6 @@ output:
 ---
 ```{r setup, include=FALSE}
 library(knitr)
-library(kableExtra)
 opts_knit$set(
 	message = FALSE,
 	warning = FALSE,
@@ -113,12 +112,12 @@ To answer these questions, pundits and writers usually focus on raw voting inten
 &nbsp;
 
 ```{r, warning=FALSE, echo=FALSE}
-latest <- get_latest() %>%
+latest <- coalitions:::get_latest() %>%
 	select(-start, -end) %>%
 	unnest() %>%
 	select(-votes) %>%
 	mutate(
-		party   = prettify_en(party),
+		party   = coalitions:::prettify_en(party),
 		percent = paste0(percent, "%"))
 # kable(latest, format="html", align=c("lrrlr"))
 forsa_tab1 <- readRDS("forsa_tab_1.Rds")
@@ -160,12 +159,12 @@ background-size: 150px
 ```{r echo=FALSE, results="asis", fig.width=8, fig.height=5, fig.align = "center", message=FALSE}
 forsa_13 <- readRDS("forsa_13.Rds") %>%
 	mutate(
-		party = factor(party, levels=party, labels=prettify_en(party)) ,
+		party = factor(party, levels=party, labels=coalitions:::prettify_en(party)) ,
 		percent = round(percent * 100, 1))
 forsa_tab1 <- readRDS("forsa_tab_1.Rds")
 kable(forsa_tab1, format="html", caption="Last FORSA poll before the 2013 election (September, 20th); n = 1995", align="rrrrrrr")
 
-names(.party_cols_de) <- prettify_en(names(.party_cols_de))
+names(.party_cols_de) <- coalitions:::prettify_en(names(.party_cols_de))
 ggplot(forsa_13,
 	aes(x=party, y=percent, fill=party)) +
 	geom_bar(stat="identity") +
@@ -483,7 +482,8 @@ background-size: 150px
 - We visualize the posterior via "ridgeline plots" ([formerly Joy plots](http://serialmentor.com/blog/2017/9/15/goodbye-joyplots))
 
 - Uses `ggplot`, `ggridges`, `gganimate`
-- (click <a href="test-joy.gif">here</a> for animated version)
+- (click <a href="test-joy.gif">here</a> for animated version; also featured
+at [Spektrum.de](http://www.spektrum.de/news/koennen-die-aktuellen-umfragen-noch-falschliegen/1503163))
 
 <a href="test-joy-static.jpeg" align="middle">
 	<img class="center" src="test-joy-static.jpeg" style="width:300px;height:400px;" align="middle">
@@ -978,7 +978,7 @@ background-size: 150px
 
 Keep in mind:
 
-- We make no predictions!
+- We do not make predictions!
 
 - Many voters (~40%) still undecided
 
